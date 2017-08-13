@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <title>微信网页授权</title>
+</head>
+<body>
+<script>
+
+    var href = location.href.split('#')[0];
+    var data = location.search.split('?');
+
+    function isContains(str, substr) {
+        return str.indexOf(substr) >= 0;
+    }
+
+    if (data[1]) {
+        if (!isContains(data[1], 'code')) {
+//          location.href = getUrl('snsapi_userinfo');
+            location.href = getUrl('snsapi_base');
+        } else {
+            console.log(data[1])
+        }
+    } else {
+//      location.href = getUrl('snsapi_userinfo');
+        location.href = getUrl('snsapi_base');
+    }
+    console.log(getUrl('snsapi_base'));
+
+    function getUrl(scope) {
+        let redirectURL = 'http://aaronzm.top/jweixin/oauth2.html';
+        let oauth2 = {
+            api: 'https://open.weixin.qq.com/connect/oauth2/authorize?',
+            appid: 'wxc9d4b3065a30a3f4',
+            redirect_uri: encodeURIComponent(redirectURL),
+            response_type: 'code',
+            scope: scope,
+            state: scope
+        }, url = '';
+        for (let k in oauth2) {
+            if (k === 'api') {
+                url = oauth2[k];
+                continue;
+            }
+            url += '&' + k + '=' + oauth2[k];
+        }
+        return url.replace(/(\&$)/g, "") + '#wechat_redirect';
+    }
+</script>
+</body>
+</html>
